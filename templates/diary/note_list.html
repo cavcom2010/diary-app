@@ -1,0 +1,92 @@
+<!-- diary/templates/diary/note_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}My Notes - My Diary{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>My Diary Entries</h1>
+    <a href="{% url 'note_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> New Entry
+    </a>
+</div>
+
+{% if notes %}
+    <div class="row">
+        {% for note in notes %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between">
+                        <small class="text-muted">
+                            {{ note.date_created|date:"F d, Y" }}
+                        </small>
+                        {% if note.is_draft %}
+                            <span class="badge bg-warning">Draft</span>
+                        {% endif %}
+                        {% if note.is_public %}
+                            <span class="badge bg-success">Public</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Private</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ note.title }}</h5>
+                        <p class="card-text">
+                            {{ note.content|truncatewords:20 }}
+                        </p>
+                        {% if note.images.exists %}
+                            <small class="text-muted">
+                                <i class="fas fa-image"></i> {{ note.images.count }} image{{ note.images.count|pluralize }}
+                            </small>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ note.get_absolute_url }}" class="btn btn-sm btn-outline-primary">Read More</a>
+                        <a href="{% url 'note_update' note.date_created.year note.date_created.month note.date_created.day note.pk %}" 
+                           class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a href="{% url 'note_delete' note.date_created.year note.date_created.month note.date_created.day note.pk %}" 
+                           class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+        <nav aria-label="Notes pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo; First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+{% else %}
+    <div class="text-center py-5">
+        <h3 class="text-muted">No diary entries yet</h3>
+        <p class="text-muted">Start writing your first entry!</p>
+        <a href="{% url 'note_create' %}" class="btn btn-primary btn-lg">Create First Entry</a>
+    </div>
+{% endif %}
+{% endblock %}

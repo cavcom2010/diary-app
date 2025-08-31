@@ -1,0 +1,77 @@
+<!-- diary/templates/diary/note_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ note.title }} - My Diary{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+                <h1>{{ note.title }}</h1>
+                <p class="text-muted">
+                    <small>
+                        Created: {{ note.date_created|date:"F d, Y \a\t g:i A" }}
+                        {% if note.date_modified != note.date_created %}
+                            | Updated: {{ note.date_modified|date:"F d, Y \a\t g:i A" }}
+                        {% endif %}
+                    </small>
+                </p>
+                <div class="mb-3">
+                    {% if note.is_draft %}
+                        <span class="badge bg-warning">Draft</span>
+                    {% endif %}
+                    {% if note.is_public %}
+                        <span class="badge bg-success">Public</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Private</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if user.is_authenticated and user == note.author %}
+                <div class="btn-group">
+                    <a href="{% url 'note_update' note.date_created.year note.date_created.month note.date_created.day note.pk %}" 
+                       class="btn btn-outline-primary">Edit</a>
+                    <a href="{% url 'note_delete' note.date_created.year note.date_created.month note.date_created.day note.pk %}" 
+                       class="btn btn-outline-danger">Delete</a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Note Images -->
+        {% if note.images.exists %}
+            <div class="row mb-4">
+                {% for image in note.images.all %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <img src="{{ image.image.url }}" class="card-img-top" alt="{{ image.caption }}" 
+                                 style="height: 200px; object-fit: cover;">
+                            {% if image.caption %}
+                                <div class="card-body py-2">
+                                    <small class="text-muted">{{ image.caption }}</small>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <!-- Note Content -->
+        <div class="card">
+            <div class="card-body">
+                <div class="note-content">
+                    {{ note.content|linebreaks }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="{% url 'note_list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Notes
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

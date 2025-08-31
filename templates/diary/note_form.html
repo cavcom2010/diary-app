@@ -1,0 +1,116 @@
+<!-- diary/templates/diary/note_form.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if object %}Edit Note{% else %}New Note{% endif %} - My Diary
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">
+                    {% if object %}
+                        Edit: {{ object.title }}
+                    {% else %}
+                        Create New Diary Entry
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Note Fields -->
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div class="text-danger mt-1">{{ form.title.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.content.id_for_label }}" class="form-label">Content</label>
+                        {{ form.content }}
+                        {% if form.content.errors %}
+                            <div class="text-danger mt-1">{{ form.content.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                {{ form.is_public }}
+                                <label class="form-check-label" for="{{ form.is_public.id_for_label }}">
+                                    Make this entry public
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                {{ form.is_draft }}
+                                <label class="form-check-label" for="{{ form.is_draft.id_for_label }}">
+                                    Save as draft
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Image Formset -->
+                    <div class="mb-4">
+                        <h5>Images</h5>
+                        {{ image_formset.management_form }}
+                        {% for form in image_formset %}
+                            <div class="border p-3 mb-3 image-form">
+                                {% if form.instance.pk %}
+                                    <h6>Current Image:</h6>
+                                    <img src="{{ form.instance.image.url }}" alt="Current image" 
+                                         class="img-thumbnail mb-2" style="max-height: 150px;">
+                                {% endif %}
+                                
+                                {% for field in form %}
+                                    {% if field.name == 'image' %}
+                                        <div class="mb-2">
+                                            <label class="form-label">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% elif field.name == 'caption' %}
+                                        <div class="mb-2">
+                                            <label class="form-label">{{ field.label }}</label>
+                                            {{ field }}
+                                        </div>
+                                    {% elif field.name == 'DELETE' %}
+                                        {% if field.value %}
+                                            <div class="form-check">
+                                                {{ field }}
+                                                <label class="form-check-label text-danger" for="{{ field.id_for_label }}">
+                                                    Delete this image
+                                                </label>
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                        {{ field.as_hidden }}
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if form.errors %}
+                                    <div class="text-danger mt-1">{{ form.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'note_list' %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            {% if object %}Update Entry{% else %}Create Entry{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
