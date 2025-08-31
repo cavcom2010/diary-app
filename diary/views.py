@@ -1,6 +1,8 @@
 # diary/views.py
 from django.shortcuts import render, redirect
+from .forms import NoteForm, NoteImageFormSet, CustomUserCreationform
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -8,7 +10,23 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .models import Note, NoteImage
-from .forms import NoteForm, NoteImageFormSet
+
+# ADD this new registration view function
+def register(request):
+    """Handle user registration"""
+    if request.method == 'POST':
+        form = CustomUserCreationform(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}! You are now logged in.')
+            # Automatically log in the user after registration
+            login(request, user)
+            return redirect('note_list')  # Redirect to diary home page
+    else:
+        form = CustomUserCreationform()
+    
+    return render(request, 'registration/register.html', {'form': form})
 
 class NoteListView(LoginRequiredMixin, ListView):
     model = Note

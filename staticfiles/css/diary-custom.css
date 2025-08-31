@@ -1,0 +1,78 @@
+/* static/css/diary-custom.css */
+/* Custom styles for the diary app */
+
+/* Note cards hover effect */
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Image thumbnails in notes */
+.note-image-thumbnail {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Form styling improvements */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Navigation brand styling */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+/* Login/Register card styling */
+.auth-card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* Responsive image handling */
+.diary-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Loading states */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Alert improvements */
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+/* Custom spacing for diary entries */
+.diary-entry {
+    margin-bottom: 2rem;
+}
+
+.diary-date {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .btn-group .btn {
+        margin-bottom: 0.5rem;
+    }
+}

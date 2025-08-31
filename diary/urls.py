@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.NoteListView.as_view(), name='note_list'),
+    path('register/', views.register, name='register'),  # register
     path('note/new/', views.NoteCreateView.as_view(), name='note_create'),
     path('note/<int:year>/<int:month>/<int:day>/<int:pk>/', 
          views.NoteDetailView.as_view(), name='note_detail'),

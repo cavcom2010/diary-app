@@ -118,7 +118,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+# Additional directories to search for static files during development
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# Directory where collectstatic will collect static files for production
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -131,5 +139,9 @@ MEDIA_ROOT= os.path.join(BASE_DIR , "media")
 LOGIN_REDIRECT_URL = '/'  # Redirect to note list after login
 LOGOUT_REDIRECT_URL = '/accounts/login/'  # Redirect to login after logout
 LOGIN_URL = '/accounts/login/'  # Where to redirect if login required
+
+# Optional: Email backend for development (shows emails in console)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 
