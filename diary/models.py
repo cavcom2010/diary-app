@@ -18,6 +18,8 @@ class Note(models.Model):
     
     # Privacy and draft settings
     is_public = models.BooleanField(default=False)
+    # is_private = models.BooleanField(default=False)
+    # is_unlisted = models.BooleanField(default=False)
     is_draft = models.BooleanField(default=False)
     
     class Meta:
