@@ -170,3 +170,19 @@ EMAIL_SUBJECT_PREFIX = '[My Diary] '
 
 
 
+# Django Email Backend Configuration for Development
+
+## Option 1: Gmail Configuration
+# django_project/settings.py - Add these email settings
+
+# Gmail SMTP Configuration
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'calvin24mazh@gmail.com'  # Replace with your Gmail
+# EMAIL_HOST_PASSWORD = 'tapinda'  # Use App Password, not regular password
+
+# # Email settings for the diary app
+# DEFAULT_FROM_EMAIL = 'calvin24mazh@gmail.com'
+# SERVER_EMAIL = 'calvin24mazh@gmail.com'
