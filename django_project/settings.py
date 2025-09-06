@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bdsereig=jz5g40i$1ue3ey&w*8)j^)(e^1wd7zxkx!t!o%vxt'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-bdsereig=jz5g40i$1ue3ey&w*8)j^)(e^1wd7zxkx!t!o%vxt')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = []
 
@@ -140,8 +144,29 @@ LOGIN_REDIRECT_URL = '/'  # Redirect to note list after login
 LOGOUT_REDIRECT_URL = '/accounts/login/'  # Redirect to login after logout
 LOGIN_URL = '/accounts/login/'  # Where to redirect if login required
 
-# Optional: Email backend for development (shows emails in console)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Email Configuration with SendGrid
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+
+if SENDGRID_API_KEY:
+    # Use SendGrid for email delivery
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.sendgrid.net'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = 'apikey'  # This is exactly the string 'apikey'
+    EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+else:
+    # Fallback to console backend for development
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Email addresses
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@localhost')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'admin@localhost')
+
+# Password reset email configuration
+# This tells Django to use our custom email templates for password reset
+EMAIL_SUBJECT_PREFIX = '[My Diary] '
 
 
 

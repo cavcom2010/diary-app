@@ -1,0 +1,48 @@
+{% extends 'emails/base_email.html' %}
+
+{% block email_title %}Welcome to My Diary - {{ user.first_name|default:user.username }}{% endblock %}
+
+{% block header_subtitle %}Welcome to Your Personal Digital Journal{% endblock %}
+
+{% block content %}
+<h2>Welcome{{ user.first_name|yesno:", "|add:user.first_name|default:"" }}!</h2>
+
+<p>Thank you for joining <strong>My Diary</strong>! We're excited to have you on board.</p>
+
+<div class="highlight">
+    <h3>🎉 Your account is ready!</h3>
+    <p>Username: <strong>{{ user.username }}</strong><br>
+    Email: <strong>{{ user.email }}</strong></p>
+</div>
+
+<h3>Get Started with Your Digital Diary</h3>
+<p>Here are some things you can do right away:</p>
+
+<ul>
+    <li><strong>✍️ Create your first note</strong> - Share your thoughts, experiences, and memories</li>
+    <li><strong>📸 Add images</strong> - Upload photos to make your entries more vivid</li>
+    <li><strong>🔒 Control privacy</strong> - Keep notes private or share them publicly</li>
+    <li><strong>📝 Save drafts</strong> - Work on entries over time before publishing</li>
+</ul>
+
+<div style="text-align: center; margin: 30px 0;">
+    <a href="{{ domain }}/note/new/" class="button">Create Your First Note</a>
+</div>
+
+<h3>Tips for Getting the Most Out of Your Diary</h3>
+<ul>
+    <li>Write regularly - even a few sentences can capture important moments</li>
+    <li>Use descriptive titles to make your entries easy to find later</li>
+    <li>Add images to bring your memories to life</li>
+    <li>Don't worry about perfect writing - this is your personal space</li>
+</ul>
+
+<p>If you have any questions or need help getting started, don't hesitate to reach out!</p>
+
+<p>Happy journaling!<br>
+<strong>The My Diary Team</strong></p>
+{% endblock %}
+
+{% block footer_extra %}
+<p><a href="{{ domain }}" style="color: #007bff;">Visit My Diary</a></p>
+{% endblock %}

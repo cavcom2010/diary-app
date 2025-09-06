@@ -1,0 +1,33 @@
+Welcome to My Diary!
+
+Hello {{ user.first_name|default:user.username }},
+
+Thank you for joining My Diary! We're excited to have you on board.
+
+Your Account Details:
+- Username: {{ user.username }}
+- Email: {{ user.email }}
+
+Get Started with Your Digital Diary:
+✍️ Create your first note - Share your thoughts, experiences, and memories
+📸 Add images - Upload photos to make your entries more vivid  
+🔒 Control privacy - Keep notes private or share them publicly
+📝 Save drafts - Work on entries over time before publishing
+
+Visit your diary: {{ domain }}
+Create your first note: {{ domain }}/note/new/
+
+Tips for Getting the Most Out of Your Diary:
+- Write regularly - even a few sentences can capture important moments
+- Use descriptive titles to make your entries easy to find later
+- Add images to bring your memories to life
+- Don't worry about perfect writing - this is your personal space
+
+If you have any questions or need help getting started, don't hesitate to reach out!
+
+Happy journaling!
+The My Diary Team
+
+---
+This email was sent from My Diary App
+If you didn't expect this email, you can safely ignore it.

@@ -10,6 +10,7 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .models import Note, NoteImage
+from .email_service import send_welcome_email
 
 # ADD this new registration view function
 def register(request):
@@ -19,7 +20,15 @@ def register(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}! You are now logged in.')
+            
+            # Send welcome email
+            email_sent = send_welcome_email(user, request)
+            if email_sent:
+                messages.success(request, f'Account created for {username}! You are now logged in. Check your email for a welcome message.')
+            else:
+                messages.success(request, f'Account created for {username}! You are now logged in.')
+                messages.info(request, 'Welcome email could not be sent, but your account is ready to use.')
+            
             # Automatically log in the user after registration
             login(request, user)
             return redirect('note_list')  # Redirect to diary home page
